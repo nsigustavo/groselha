@@ -1,15 +1,15 @@
-Javascript Page Template
+Groselha Page Template
 ========================
 
-Javascript Page Templates are an HTML/XML generation tool.
-This appendix is a reference to Javascript Page Templates standards:
-It also describes some JPT-specific behaviors that are not part of the standards.
+Groselha Page Templates are an HTML/XML generation tool for python end javascript.
+This appendix is a reference to Groselha Page Templates standards:
+It also describes some Grosa-specific behaviors that are not part of the standards.
 This page template has been inspired in zpt http://docs.zope.org/zope2/zope2book/AppendixC.html.
 
-JPT Overview
+Grosa Overview
 ------------
 
-The Javascript Attribute Language (JPT) standard is an 
+The Groselha Page Templates (Grosa) standard is an 
 attribute language used to create dynamic templates. 
 It allows elements of a document to be replaced, repeated, or omitted.
 
@@ -17,12 +17,12 @@ A  statement has a name (the attribute name) and a body (the attribute value).
 For example, an content statement might look like: content="name"
 
 
-JPT Statements
+Grosa Statements
 --------------
 
 These are the statements:
 
-    * attr: - dynamically change element attributes.
+    * attr:* - dynamically change element attributes.
     * condition - test conditions.
     * content - replace the content of an element.
     * repeat - repeat an element.
@@ -72,7 +72,7 @@ Replacing a link::
 
 Replacing two attrs::
 
-    <textarea rows="80" cols="20" attr:rows"element.rows" attr:cols="element.cols">
+    <textarea rows="80" cols="20" attr:rows="element.rows" attr:cols="element.cols">
 
 
 
@@ -204,7 +204,7 @@ For these purposes, the value nothing is false,
 and default has the same effect as returning a true value.
 
 Note::
-    Javascript considers missing variables, null, zero, and empty strings false;
+    Groselha considers missing variables, null, zero, and empty strings false;
     all other values are true.
 
 
@@ -226,9 +226,9 @@ Test for alternate conditions::
 Built-in Functions and variables
 ================================
 
-Javascript expressions have the same built-ins as Javascrit-based Scripts with a few additions.
+Groselha expressions have the same built-ins as Javascrit-based Scripts with a few additions.
 
-These standard Javascript built-ins are available:
+These standard Groselha built-ins are available:
 
     * window        - The window object represents an open window in a browser.
     * document      -
@@ -238,7 +238,7 @@ These standard Javascript built-ins are available:
     * location      - The location object contains information about the current URL.
     * undefined     - Indicates that a variable has not been assigned a value
 
-TODO:JPT String expressions
+TODO:Grosa String expressions
 ===========================
 
 String expressions interpret the expression in attribute with '' or "" as text.
@@ -270,11 +270,11 @@ Including a % sign::
     </p>
 
 
-JPT-specific Behaviors
+Grosa-specific Behaviors
 ======================
 
-The behavior of Javascript Page Templates is almost completely described by the
-statements specifications. JPTs do, however, have a few additional 
+The behavior of Groselha Page Templates is almost completely described by the
+statements specifications. Grosas do, however, have a few additional 
 features that are not described in the standards.
 
 #TODO:
