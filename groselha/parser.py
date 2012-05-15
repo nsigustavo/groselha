@@ -11,9 +11,14 @@ class Grosa(object):
     filters = {
         'toHtml': lambda html: BeautifulSoup(html)
     }
+    
+    @classmethod
+    def push_filter(cls, filter):
+        cls.filters[filter.func_name] = filter
 
-    def __init__(self, template_source):
-        self.template = BeautifulSoup(template_source)
+    def __init__(self, template_path):
+        f = open(template_path,'r')
+        self.template = BeautifulSoup(f.read())
 
     def render(self, context):
         self._render_template(self.template.childGenerator(), context)
@@ -91,7 +96,7 @@ class Grosa(object):
             acessor = tag_template['content']
             value = self.get_value(context, acessor)
             if not isinstance(value, Tag):
-                tag_template.string = unicode(value)
+                tag_template.string = unicode(value, errors='replace')
             else:
                 for child in tag_template.childGenerator():
                     child.extract()
@@ -122,6 +127,7 @@ class Grosa(object):
         return self.apply_filters(result, acessor.split('|')[1:])
 
     def apply_filters(self, result, filters):
+        #import ipdb; ipdb.set_trace();
         for filter in [self.filters[filter_name] for filter_name in filters]:
             result = filter(result)
         return result
