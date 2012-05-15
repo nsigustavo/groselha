@@ -95,7 +95,7 @@ class Grosa(object):
             acessor = tag_template['content']
             value = self.get_value(context, acessor)
             if not isinstance(value, Tag):
-                tag_template.string = unicode(value, errors='replace')
+                tag_template.string = unicode(value)
             else:
                 for child in tag_template.childGenerator():
                     child.extract()
