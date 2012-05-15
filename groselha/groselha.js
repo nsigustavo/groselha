@@ -1,16 +1,16 @@
 (function( $ ){
-    $.jpt = {};
-    $.jpt.filters = {
+    $.grosa = {};
+    $.grosa.filters = {
         toHtml:function(text){
             return $('<div>'+text+'</div>').contents();
         }    
     };
-    $.jpt.extendFilter = function(extensions){
-        $.extend($.jpt.filters, extensions);
+    $.grosa.extendFilter = function(extensions){
+        $.extend($.grosa.filters, extensions);
     };
-    $.jpt.templateTags = {};
-    $.jpt.extendTemplateTags = function(extensions){
-        $.extend($.jpt.templateTags, extensions);
+    $.grosa.templateTags = {};
+    $.grosa.extendTemplateTags = function(extensions){
+        $.extend($.grosa.templateTags, extensions);
     };
     function get_variable_in_context(context, acessor_array){
             if (!context) return undefined;
@@ -19,8 +19,8 @@
 			if (context.hasOwnProperty(current_acessor)){
 				current_context = context[current_acessor];
 			} 
-			else if ($.jpt.filters.hasOwnProperty(current_acessor)){
-				current_context = $.jpt.filters[current_acessor];
+			else if ($.grosa.filters.hasOwnProperty(current_acessor)){
+				current_context = $.grosa.filters[current_acessor];
 			}
 			else if (window.hasOwnProperty(current_acessor)){
                 current_context = window[current_acessor];
@@ -99,7 +99,7 @@
                 };
                 var $new_tag = $tag_base.clone();
                 context[item_name]=item;
-                var $new_element = $new_tag.jptRender(context)
+                var $new_element = $new_tag.grosaRender(context)
                 $new_element.insertBefore($tag_base);
                 index++;
                 number++;
@@ -130,13 +130,13 @@
             }
     }
     function renderTemplateTags(context){
-        for (var tagName in $.jpt.templateTags)
+        for (var tagName in $.grosa.templateTags)
             if (this[0].tagName.toLowerCase()==tagName.toLowerCase()){
-                var result = $.jpt.templateTags[tagName].call(context, this);
+                var result = $.grosa.templateTags[tagName].call(context, this);
                 this.replaceWith(result);
             };
     }
-    $.fn.jptRender = function(context) {
+    $.fn.grosaRender = function(context) {
       context.getElement = getElement
       var html =  this.clone();
       html.renderInline(context);

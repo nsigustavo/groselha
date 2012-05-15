@@ -17,5 +17,5 @@ setup(name='groselha',
       packages=find_packages(exclude=['ez_setup', 'testes']),
       include_package_data=True,
       zip_safe=True,
-      install_requires=[],
+      install_requires=['BeautifulSoup'],
 )

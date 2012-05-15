@@ -12,12 +12,12 @@ $.get = function(url, parameters, callback){
 $(function(){
 
     test("deve capturar a template", function() {
-        jptajax = JptAjax.new('/url/template/test.html');
-        equal(jptajax.template.html(), $('<span>teste</span>').html());
+        GrosaAjax = GrosaAjax.new('/url/template/test.html');
+        equal(GrosaAjax.template.html(), $('<span>teste</span>').html());
     });
 
     test("deve renderizar a template", function() {
-        jptajax = JptAjax.new('/url/template/test.html').render({'name':'Gustavo'}, function(html){
+        GrosaAjax = GrosaAjax.new('/url/template/test.html').render({'name':'Gustavo'}, function(html){
             $.esperado.html = html
         });
         equal($.esperado.html.html(), $('<span>Gustavo</span>').html());

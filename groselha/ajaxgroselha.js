@@ -11,7 +11,7 @@ Class.new = function(context) {
  return cls;
 };
 
-JptAjax = Class.new({
+GrosaAjax = Class.new({
 
     initialize: function(template_link, param){
         this.observers = [];
@@ -28,7 +28,7 @@ JptAjax = Class.new({
         this._renderCallbacks();
     },
     jsonPusher: function(render_name, callback){
-        JptAjax.prototype = {
+        GrosaAjax.prototype = {
             render_name: function(json){
                 this.render(json, callback);
          }
@@ -56,7 +56,7 @@ JptAjax = Class.new({
         if (this.template){
             while (this.contexts.length != 0) {
                 var context = this.contexts.pop(0);
-                var html = this.template.jptRender(context.context);
+                var html = this.template.grosaRender(context.context);
                 context.callback(html);
                 this.notifyObservers(html, context.context)
          }

@@ -1,36 +1,36 @@
 $(document).ready(function(){
 
     test("filter toHtml with &aacute;", function() {
-        var $html = $("<div><p content='text_html|toHtml' /></div>").jptRender({"text_html": "<b>texto com &aacute;</b>"});
+        var $html = $("<div><p content='text_html|toHtml' /></div>").grosaRender({"text_html": "<b>texto com &aacute;</b>"});
         equal($html.find('b').text(), "texto com á", '');
     });
 
     test("filter toHtml", function() {
-        var $html = $("<div><p content='text_html|toHtml' /></div>").jptRender({"text_html": "<b>texto</b>"});
+        var $html = $("<div><p content='text_html|toHtml' /></div>").grosaRender({"text_html": "<b>texto</b>"});
         equal($html.find('b').length, 1, '');
     });
 
     test("should remove element if var not in context", function() {
-        var $html = $("<div><img condition='image' /></div>").jptRender({});
+        var $html = $("<div><img condition='image' /></div>").grosaRender({});
         equal($html.find('img').length, 0, 'img not removed');
     });
 
     test("should remove condition statement if var in context", function() {
-        var $html = $("<img condition='image' />").jptRender({
+        var $html = $("<img condition='image' />").grosaRender({
             'image': 'test.png'
         });
         ok(!$html.attr('condition'), 'condition not statement removed');
     });;
 
     test("should substitute content", function() {
-        var $html = $("<a content='title'>title</a>").jptRender({
+        var $html = $("<a content='title'>title</a>").grosaRender({
             'title': 'example'
         });
         equal($html.text(), 'example', 'did not substitute tag content');
     });
 
     test("should substitute attribute of context", function() {
-        var $html = $("<a content='tweet.title'>title</a>").jptRender({
+        var $html = $("<a content='tweet.title'>title</a>").grosaRender({
             'tweet': {
                 'title': 'example'
             }
@@ -39,7 +39,7 @@ $(document).ready(function(){
     });
 
     test("should replace the tag with the text equivalent to the value in the dictionary", function() {
-        var $html = $("<div><a>Titulo:<span replace='title'>title</span></a></div>").jptRender({
+        var $html = $("<div><a>Titulo:<span replace='title'>title</span></a></div>").grosaRender({
             'title': 'example'
         });
         equal($html.find('a').text(), 'Titulo:example', 'did not replace tag span');
@@ -48,13 +48,13 @@ $(document).ready(function(){
     test("should repeat this tag for each item in my list of object values", function() {
         var context = {
             'tweets': [{
-                'text': 'New project new Jpt'
+                'text': 'New project new grosa'
             },
             {
-                'text': 'new Jpt is cool'
+                'text': 'new grosa is cool'
             }]
         };
-        var $html = $("<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>").jptRender(context);
+        var $html = $("<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>").grosaRender(context);
         equal($html.find('li').length, 2, 'did not repeat tag li');
     });
 
@@ -62,22 +62,22 @@ $(document).ready(function(){
         var context = {
             'tweets': []
         };
-        var $html = $("<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>").jptRender(context);
+        var $html = $("<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>").grosaRender(context);
         equal($html.find('li').length, 0, 'tag li exists');
     });
 
     test("should repeat this tag for each item in my list of object values and apply new context", function() {
         var context = {
             'tweets': [{
-                'text': 'New project new Jpt'
+                'text': 'New project new grosa'
             },
             {
-                'text': 'new Jpt is cool'
+                'text': 'new grosa is cool'
             }]
         };
-        var $html = $("<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>").jptRender(context);
+        var $html = $("<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>").grosaRender(context);
         first_link = $($html.find('a')[0])
-        equal(first_link.text(), 'New project new Jpt', 'Not apply new context');
+        equal(first_link.text(), 'New project new grosa', 'Not apply new context');
     });
 
     test("The condition statement should remove element if a function in context return false", function() {
@@ -86,7 +86,7 @@ $(document).ready(function(){
                 return false;
             }
         };
-        var $html = $("<div><img condition='test'/></div>").jptRender(context);
+        var $html = $("<div><img condition='test'/></div>").grosaRender(context);
         equal($html.find('img').length, 0, 'img not removed');
     });
 
@@ -96,40 +96,40 @@ $(document).ready(function(){
                 return true;
             }
         }
-        var $html = $("<div><img condition='test'/></div>").jptRender(context);
+        var $html = $("<div><img condition='test'/></div>").grosaRender(context);
         equal($html.find('img').length, 1, 'img removed');
     });
 
     test("The content statement should subtitute content of tag with returned of function", function() {
         var context = {
             title: function() {
-                return 'Jpt is cool';
+                return 'grosa is cool';
             }
         };
-        var $html = $("<div><title content='title'>title</title></div>").jptRender(context);
-        equal($html.find('title').text(), 'Jpt is cool', 'The statement did not replace the text');
+        var $html = $("<div><title content='title'>title</title></div>").grosaRender(context);
+        equal($html.find('title').text(), 'grosa is cool', 'The statement did not replace the text');
     });
 
     test("The replace statement should subtitute tag with returned of function", function() {
         var context = {
             title: function() {
-                return 'Jpt is cool';
+                return 'grosa is cool';
             }
         };
-        var $html = $("<div>title:<span replace='title'>title</span></div>").jptRender(context);
-        equal($html.text(), 'title:Jpt is cool', 'The statement did not replace the text');
+        var $html = $("<div>title:<span replace='title'>title</span></div>").grosaRender(context);
+        equal($html.text(), 'title:grosa is cool', 'The statement did not replace the text');
     });
 
 
     test("The value of src attribute should be replace with value of context", function() {
-        var $html = $("<div>image:<img attr:src='photo.src' src='' /></div>").jptRender({
+        var $html = $("<div>image:<img attr:src='photo.src' src='' /></div>").grosaRender({
             'photo': {'src':'image.png'}
         });
         equal($html.find('img').attr('src'), 'image.png', 'The attribute src not replaced for image.png');
     });
 
     test("The value of attributes should be replace with values of context", function() {
-        var $html = $("<div>image:<img  attr:alt='text' attr:src='photo' /></div>").jptRender({
+        var $html = $("<div>image:<img  attr:alt='text' attr:src='photo' /></div>").grosaRender({
             'photo': 'image.png',
             'text': 'alternative text'
         });
@@ -138,7 +138,7 @@ $(document).ready(function(){
     });
 
     test("The value of attributes should be replaced with values of context with function return", function() {
-        var $html = $("<div>image:<img attr:src='photo' /></div>").jptRender({
+        var $html = $("<div>image:<img attr:src='photo' /></div>").grosaRender({
             photo: function() {
                 return 'image.png'
             }
@@ -147,7 +147,7 @@ $(document).ready(function(){
     });
 
     test("The condition should  verify values of context with function return", function() {
-        var $html = $("<div>image:<img condition='photo' attr:src='photo' src='' /></div>").jptRender({
+        var $html = $("<div>image:<img condition='photo' attr:src='photo' src='' /></div>").grosaRender({
             photo: function() {
                 return 'image.png'
             }
@@ -161,12 +161,12 @@ $(document).ready(function(){
                 return undefined
             }
         }
-        var $html = $("<div>image:<img condition='photo' attr:src='photo' src='' /></div>").jptRender(context);
+        var $html = $("<div>image:<img condition='photo' attr:src='photo' src='' /></div>").grosaRender(context);
         equal($html.find('img').length, 0);
     });
 
     test("repeat should keep ordering", function() {
-        var $html = $("<ul><li repeat='item items' content='item'></li></ul>").jptRender({
+        var $html = $("<ul><li repeat='item items' content='item'></li></ul>").grosaRender({
             items: [1, 2, 3]
         });
         equal($html.find('li').eq(0).text(), '1');
@@ -175,30 +175,29 @@ $(document).ready(function(){
     });
 
     test("repeat should consider variables to access information about the current repetition", function() {
-        var $html = $("<table><tr><th>start</th><th>end</th><th>odd</th><th>even</th><th>index</th><th>number</th><th>Name</th></tr><tr repeat='name names'><td content='repeat.start'>true</td><td content='repeat.end'>true</td><td content='repeat.odd'>true</td><td content='repeat.even'>true</td><td content='repeat.index'>0</td><td content='repeat.number'>1</td><td content='name'>Gustavo</td></tr></table>").jptRender({
+        var $html = $("<table><tr><th>start</th><th>end</th><th>odd</th><th>even</th><th>index</th><th>number</th><th>Name</th></tr><tr repeat='name names'><td content='repeat.start'>true</td><td content='repeat.end'>true</td><td content='repeat.odd'>true</td><td content='repeat.even'>true</td><td content='repeat.index'>0</td><td content='repeat.number'>1</td><td content='name'>Gustavo</td></tr></table>").grosaRender({
             names: ['Gustavo','Zacaster', 'Hugo']
         });
         equal($html.html(),'<tbody><tr><th>start</th><th>end</th><th>odd</th><th>even</th><th>index</th><th>number</th><th>Name</th></tr><tr><td>true</td><td>false</td><td>true</td><td>false</td><td>0</td><td>1</td><td>Gustavo</td></tr><tr><td>false</td><td>false</td><td>false</td><td>true</td><td>1</td><td>2</td><td>Zacaster</td></tr><tr><td>false</td><td>true</td><td>true</td><td>false</td><td>2</td><td>3</td><td>Hugo</td></tr></tbody>');
     });
 
     test("should render templateTags", function() {
-        $.jpt.extendTemplateTags({hello: function($node){
+        $.grosa.extendTemplateTags({hello: function($node){
                                             return "hello "+$node.attr('name')
                                         }
                                 })
-        var $html = $("<h1><hello name='Gustavo Rezende'>guy</hello></h1>").jptRender({'a':3});
+        var $html = $("<h1><hello name='Gustavo Rezende'>guy</hello></h1>").grosaRender({'a':3});
         equal($html.text(), 'hello Gustavo Rezende');
     });
     test("deve formartar uma string", function() {
-        var $html = $("<h1 content='string:hello {{name}}'></h1>").jptRender({'name':'Gustavo Rezende'});
+        var $html = $("<h1 content='string:hello {{name}}'></h1>").grosaRender({'name':'Gustavo Rezende'});
         equal($html.text(), 'hello Gustavo Rezende');
     });
 
     test("deve formartar uma string com multiplos contextos", function() {
         var context = {'user':{'alias':'groselha','name':'Gustavo Rezende'}};
-        var $html = $("<h1 content='string:hello {{user.alias}}, {{user.name}}'></h1>").jptRender(context);
+        var $html = $("<h1 content='string:hello {{user.alias}}, {{user.name}}'></h1>").grosaRender(context);
         equal($html.text(), 'hello groselha, Gustavo Rezende');
     });
-
 
 });
