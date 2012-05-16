@@ -15,10 +15,15 @@ class Grosa(object):
     @classmethod
     def push_filter(cls, filter):
         cls.filters[filter.func_name] = filter
+    
+    def __init__(self, template_text):
+        self.template = BeautifulSoup(template_text)
 
-    def __init__(self, template_path):
-        f = open(template_path,'r')
-        self.template = BeautifulSoup(f.read())
+    @staticmethod
+    def fromFile(template_path):
+        with open(template_path,'r') as template_file:
+            grosa = Grosa(template_file.read())
+        return grosa
 
     def render(self, context):
         self._render_template(self.template.childGenerator(), context)
@@ -95,7 +100,10 @@ class Grosa(object):
             acessor = tag_template['content']
             value = self.get_value(context, acessor)
             if not isinstance(value, Tag):
-                tag_template.string = value
+                if type(value) == unicode:
+                    tag_template.string = value
+                else:
+                    tag_template.string = unicode(value)
             else:
                 for child in tag_template.childGenerator():
                     child.extract()
