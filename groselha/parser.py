@@ -15,6 +15,7 @@ class Grosa(object):
     @classmethod
     def push_filter(cls, filter):
         cls.filters[filter.func_name] = filter
+        return filter
     
     def __init__(self, template_text):
         self.template = BeautifulSoup(template_text)
