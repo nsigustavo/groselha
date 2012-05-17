@@ -6,8 +6,8 @@ version = '0.0.1'
 
 setup(name='groselha',
       version=version,
-      description="Javascript Page Templates are an HTML/XML generation tool.",
-      long_description=open("README.rst").read(),
+      description="Javascript Page Templates is an HTML/XML generation tool.",
+      long_description="Javascript Page Templates is an HTML/XML generation tool.",
       classifiers=[],
       keywords='',
       author='Time de busca da globo.com',
