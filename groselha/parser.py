@@ -11,7 +11,7 @@ class Grosa(object):
     filters = {
         'toHtml': lambda html: BeautifulSoup(html)
     }
-    
+
     @classmethod
     def push_filter(cls, filter):
         cls.filters[filter.func_name] = filter
@@ -26,9 +26,13 @@ class Grosa(object):
             grosa = Grosa(template_file.read())
         return grosa
 
+    def render_to_soup(self, context):
+        template = deepcopy(self.template)
+        self._render_template(template.childGenerator(), context)
+        return template.contents[0]
+
     def render(self, context):
-        self._render_template(self.template.childGenerator(), context)
-        return self.template.prettify()
+        return self.render_to_soup(context).prettify()
 
     def _render_template(self, tags, context):
         for tag_template in tags:
@@ -104,7 +108,7 @@ class Grosa(object):
                 if type(value) == unicode:
                     tag_template.string = value
                 else:
-                    tag_template.string = unicode(value)
+                    tag_template.string = unicode(str(value), 'utf-8', errors='ignore')
             else:
                 for child in tag_template.childGenerator():
                     child.extract()
