@@ -7,6 +7,7 @@ from copy import deepcopy, copy
 
 class Grosa(object):
     """Groselha Page Template"""
+
     regex_repeat = re.compile("(?P<item_name>.*)\s+(?P<acessor>.*)")
     filters = {
         'toHtml': lambda html: BeautifulSoup(html)
@@ -27,12 +28,15 @@ class Grosa(object):
         return grosa
 
     def render_to_soup(self, context):
+        return self._render_to_soup(context).contents[0]
+
+    def _render_to_soup(self, context):
         template = deepcopy(self.template)
         self._render_template(template.childGenerator(), context)
-        return template.contents[0]
+        return template
 
     def render(self, context):
-        return self.render_to_soup(context).prettify()
+        return self._render_to_soup(context).prettify()
 
     def _render_template(self, tags, context):
         for tag_template in tags:
