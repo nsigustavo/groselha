@@ -3,7 +3,7 @@
 from BeautifulSoup import BeautifulSoup, Tag, NavigableString
 import re
 from copy import deepcopy, copy
-
+import codecs
 
 class Grosa(object):
     """Groselha Page Template"""
@@ -18,12 +18,15 @@ class Grosa(object):
         cls.filters[filter.func_name] = filter
         return filter
     
-    def __init__(self, template_text):
-        self.template = BeautifulSoup(template_text)
+    def __init__(self, template_text, fromEncoding='utf-8'):
+        if type(template_text) == str:
+            self.template = BeautifulSoup(template_text, fromEncoding)
+        else:
+            self.template = BeautifulSoup(template_text)
 
     @staticmethod
     def fromFile(template_path):
-        with open(template_path,'r') as template_file:
+        with codecs.open(template_path, encoding='utf-8') as template_file:
             grosa = Grosa(template_file.read())
         return grosa
 
@@ -109,10 +112,10 @@ class Grosa(object):
             acessor = tag_template['content']
             value = self.get_value(context, acessor)
             if not isinstance(value, Tag):
-                if type(value) == unicode:
+                if isinstance(value, (str, unicode)):
                     tag_template.string = value
                 else:
-                    tag_template.string = unicode(str(value), 'utf-8', errors='ignore')
+                    tag_template.string = str(value)
             else:
                 for child in tag_template.childGenerator():
                     child.extract()
