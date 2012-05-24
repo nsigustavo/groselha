@@ -64,7 +64,12 @@ class Grosa(object):
             del tag_template['repeat']
             index = 0
             number = 1
-            for item in elements:
+            try:
+                list(elements)
+            except TypeError:
+                raise TypeError("'%s' object is not iterable"% acessor)
+                
+            for item in list(elements):
                 context['repeat'] = {
                     "index": index,
                     "number": number,
