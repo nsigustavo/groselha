@@ -17,29 +17,26 @@ class GrosaTestCase(TestCase):
 
     def test_should_subtitute_attribute_of_context(self):
         self.template(u"<b content='tweet.title'>title</b>", {'tweet': {'title': 'example'}}).equal("<b>example</b>")
-
+    
     def test_should_subtitute_content(self):
         self.template(u"<b content='title'>Title</b>", {'title': 'example'}).equal("<b>example</b>")
-
+    
     def test_not_filtered_toHtml_should_render_html_scaped(self):
         self.template(u"<div><p content='text_html' /></div>", {"text_html": "<b>text</b>"}).equal("<div><p>&lt;b&gt;text&lt;/b&gt;</p></div>")
-
+    
     def test_filter_toHtml_should_render_no_scaped_text(self):
         self.template(u"<div><p content='text_html|toHtml'>teste</p></div>", {"text_html": "<b>texto com &aacute;</b>"}).equal("<div><p><b>texto com &aacute;</b></p></div>")
-
-    def test_should_remove_script_tag_from_context(self):
-        self.template(u"<div><p content='text_html|toHtml'>teste</p></div>", {"text_html": "<script>alert('test');</script><b>texto com &aacute;</b>"}).equal("<div><p>&lt;script&gt;alert('test');&lt;/script&gt;<b>texto com &aacute;</b></p></div>")
-
+    
     def test_should_remove_element_if_var_not_in_context(self):
         self.template(u"<div><img condition='image' /></div>", {}).equal("<div></div>")
-
+    
     def test_should_remove_condition_statement_if_var_in_context(self):
         self.template(u"<div><img condition='image' /></div>", {'image': 'test.png'}).equal("<div><img /></div>")
-
+  
     def test_should_replace_the_tag_with_the_text_equivalent_to_the_value_in_the_dictionary(self):
         self.template(u"<div><a>Titulo:<span replace='title'>title</span></a></div>", {'title': 'example'}).equal("<div><a>Titulo:example</a></div>")
         self.template(u"<div><a><span replace='title'>title</span>:Titulo</a></div>", {'title': 'example'}).equal("<div><a>example:Titulo</a></div>")
-
+  
     def test_should_repeat_this_tag_for_each_item_in_my_list_of_object_values(self):
         context = {
             'tweets': [
@@ -49,14 +46,14 @@ class GrosaTestCase(TestCase):
         }
         self.template(u"<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>", context
                         ).equal("<ul><li><a>New project new grosa</a></li><li><a>new grosa is cool</a></li></ul>")
-
+  
     def test_should_not_render_the_tag_if_repeating_in_an_empty_list(self):
         context = {
             'tweets': []
         };
         self.template(u"<ul><li repeat='tweet tweets' ><a content='tweet.text'>test</a></li></ul>", context
                         ).equal("<ul></ul>")
-
+  
     def test_repeat_should_keep_ordering(self):
         context = {"items": [1, 2, 3]}
         self.template(u"<ul><li repeat='item items' content='item'></li></ul>", context).equal(
