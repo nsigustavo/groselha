@@ -2,6 +2,7 @@
 
 from BeautifulSoup import BeautifulSoup, Tag, NavigableString
 import re
+import cgi
 from copy import deepcopy, copy
 import codecs
 
@@ -10,17 +11,18 @@ class Grosa(object):
 
     regex_repeat = re.compile("(?P<item_name>.*)\s+(?P<acessor>.*)")
     filters = {
-        'toHtml': lambda html: BeautifulSoup(html)
+        'toHtml': lambda html: BeautifulSoup(html.replace("<script>", cgi.escape("<script>")).replace("</script>", cgi.escape("</script>")))
     }
 
     @classmethod
     def push_filter(cls, filter):
         cls.filters[filter.func_name] = filter
         return filter
-    
+
     def __init__(self, template_text, fromEncoding='utf-8'):
+        print "doidao"
         if type(template_text) == str:
-            self.template = BeautifulSoup(template_text, fromEncoding)
+            self.template = BeautifulSoup(template_text)
         else:
             self.template = BeautifulSoup(template_text)
 
@@ -47,6 +49,8 @@ class Grosa(object):
                 self._render_template_tag(tag_template, context)
 
     def _render_template_tag(self, tag_template, context):
+        for chave, valor in context.items():
+            print valor
         if not self.render_repeat(tag_template, context):
             self.render_condition(tag_template, context)
             self.render_content(tag_template, context)
@@ -151,7 +155,6 @@ class Grosa(object):
         return self.apply_filters(result, acessor.split('|')[1:])
 
     def apply_filters(self, result, filters):
-        #import ipdb; ipdb.set_trace();
         for filter in [self.filters[filter_name] for filter_name in filters]:
             result = filter(result)
         return result
