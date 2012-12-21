@@ -5,12 +5,18 @@ import re
 from copy import deepcopy, copy
 import codecs
 
+
 class Grosa(object):
     """Groselha Page Template"""
 
     regex_repeat = re.compile("(?P<item_name>.*)\s+(?P<acessor>.*)")
+
+    def to_html(html):
+        if html:
+            return BeautifulSoup(html)
+
     filters = {
-        'toHtml': lambda html: BeautifulSoup(html)
+        'toHtml': to_html,
     }
 
     @classmethod
@@ -28,6 +34,7 @@ class Grosa(object):
     def fromFile(template_path):
         with codecs.open(template_path, encoding='utf-8') as template_file:
             grosa = Grosa(template_file.read())
+            grosa.template_path = template_path
         return grosa
 
     def render_to_soup(self, context):
@@ -67,6 +74,8 @@ class Grosa(object):
             try:
                 list(elements)
             except TypeError:
+                if hasattr(self, 'template_path'):
+                    raise TypeError("'%s' object is not iterable in %s"% (acessor, self.template_path))
                 raise TypeError("'%s' object is not iterable"% acessor)
                 
             for item in list(elements):
@@ -100,8 +109,10 @@ class Grosa(object):
                     tag_template.extract()
                 else:
                     tag_template.replaceWith(NavigableString(value))
-            else:
+            elif value:
                 tag_template.replaceWith(value)
+            else:
+                tag_template.extract()
 
     def render_condition(self, tag_template, context):
         if tag_template.has_key('condition'):
